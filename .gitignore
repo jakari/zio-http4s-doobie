@@ -1,0 +1,14 @@
+.cache
+.cache-main
+.cache-tests
+.history
+.lib/
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+
+/src/main/resources/application.conf
+/src/main/resources/application.test.conf
