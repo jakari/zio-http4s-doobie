@@ -4,17 +4,18 @@ import example.models.CreateTask
 import example.repository.ExampleRepository
 import example.repository.examples
 import io.circe.generic.auto._
-import org.http4s.HttpRoutes
+import io.circe.{Decoder, Encoder}
+import org.http4s.{EntityDecoder, EntityEncoder, HttpRoutes}
 import org.http4s.dsl.Http4sDsl
 import zio._
 import zio.interop.catz._
+import example.JsonCodec._
 
 case class ExampleEndpoint[R <: ExampleRepository]() {
   type RoutesTask[A] = RIO[R, A]
 
   val dsl: Http4sDsl[RoutesTask] = Http4sDsl[RoutesTask]
   import dsl._
-  import example.JsonCodec._
 
   def routes: HttpRoutes[RoutesTask] = {
     HttpRoutes.of[RoutesTask] {

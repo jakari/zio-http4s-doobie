@@ -1,17 +1,11 @@
 package example.database
 
 import cats.effect.Blocker
-import example.database.Connection.Service
 import example.service.Config
 import doobie._
 import doobie.hikari._
 import zio._
-import zio.ZIO
 import zio.interop.catz._
-
-trait Connection {
-  def connection: Service
-}
 
 object Connection {
   def create(config: Config): Managed[Throwable, HikariTransactor[Task]] = {
@@ -31,13 +25,7 @@ object Connection {
       )
     } yield xa
 
-    val res = xa
-      .allocated
-      .map { case (transactor, cleanupM) =>
-        Reservation(ZIO.succeed(transactor), _ => cleanupM.orDie)
-      }.uninterruptible
-
-    Managed(res)
+    xa.toManagedZIO
   }
 
   def createSimpleTransactor(config: Config): Transactor[Task] = {
@@ -52,5 +40,10 @@ object Connection {
   trait Service {
     def xa: Transactor[Task]
   }
-}
 
+  def live(transactor: Transactor[Task]): ULayer[Connection] = ZLayer.succeed {
+    new Service {
+      override def xa: doobie.Transactor[Task] = transactor
+    }
+  }
+}

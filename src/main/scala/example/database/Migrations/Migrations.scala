@@ -10,7 +10,7 @@ import zio.interop.catz._
 object Migrations {
   def up(): ZIO[Connection, Throwable, Any] = {
     ZIO.accessM[Connection](c => {
-      val xa = c.connection.xa
+      val xa = c.get.xa
       for {
         _ <- createVersionTable.transact(xa)
         installed <- getExistingMigrations.transact(xa)
