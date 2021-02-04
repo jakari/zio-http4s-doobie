@@ -27,7 +27,7 @@ object Migrations {
     _ <- versions
       .filter(file => !installed.contains(file.version))
       .map(migrateVersion)
-      .foldRight(Fragment.empty.update.run)((a, b) => b.flatMap(_ => b))
+      .foldRight(Fragment.empty.update.run)((a, b) => a.flatMap(_ => b))
   } yield ()
 
   def migrateVersion(content: MigrationVersion) = for {
