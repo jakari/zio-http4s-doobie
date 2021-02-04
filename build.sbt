@@ -1,13 +1,13 @@
 val Http4sVersion = "0.21.14"
 val Specs2Version = "4.1.0"
 val LogbackVersion = "1.2.3"
-val circeVersion = "0.12.3"
+val circeVersion = "0.13.0"
 val doobieVersion = "0.9.2"
 val zioVersion = "1.0.3"
 
 lazy val root = (project in file("."))
   .settings(
-    organization := "com.rin",
+    organization := "com",
     name := "example",
     version := "0.0.1-SNAPSHOT",
     scalaVersion := "2.13.4",
