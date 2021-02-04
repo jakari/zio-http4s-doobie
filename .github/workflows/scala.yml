@@ -14,7 +14,7 @@ jobs:
       DATABASE_NAME: exampledb
       DATABASE_PASSWORD: postgres
       DATABASE_USERNAME: postgres
-      DATABASE_host: localhost
+      DATABASE_HOST: localhost
     services:
       # Label used to access the service container
       postgres:
