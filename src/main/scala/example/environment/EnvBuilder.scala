@@ -1,17 +1,18 @@
 package example.environment
 
 import doobie.Transactor
-import example.database.{Connection, DBAL}
+import example.database.{Connection, Transaction}
 import example.repository.ExampleRepository
 import zio._
 import zio.clock.Clock
 
 object EnvBuilder {
-  def buildLiveEnv(transactor: Transactor[Task]): Layer[Any, AppEnvironment] = {
+  def buildLiveEnv(transactor: Transactor[Task]): TaskLayer[AppEnvironment] = {
     val connection = Connection.live(transactor)
-    val dbal = connection >>> DBAL.live
-    val exampleRepository = dbal >>> ExampleRepository.live
+    val transaction = connection >>> Transaction.live
 
-    exampleRepository ++ connection ++ Clock.live
+    val exampleRepository = transaction >>> ExampleRepository.live
+
+    exampleRepository ++ transaction ++ Clock.live
   }
 }

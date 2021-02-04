@@ -6,7 +6,7 @@ import pureconfig.generic.auto._
 object AppConfiguration {
   def appConfig: Config = ConfigSource.default.loadOrThrow[Config]
   def testConfig: Config = ConfigSource
-    .resources("application.conf")
+    .resources("application.test.conf")
     .loadOrThrow[Config]
 }
 

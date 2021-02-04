@@ -27,12 +27,12 @@ object Server extends App {
         val deps = EnvBuilder.buildLiveEnv(transactor)
         Migrations.up().provideLayer(deps) *> server.provideLayer(deps)
       }
-      .foldM(
+      .fold(
         err => {
           println(s"Execution failed with: $err")
-          ZIO.succeed(ExitCode.failure)
+          ExitCode.failure
         },
-        _ => ZIO.succeed(ExitCode.success)
+        _ => ExitCode.success
       )
   }
 }

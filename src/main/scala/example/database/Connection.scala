@@ -41,7 +41,7 @@ object Connection {
     def xa: Transactor[Task]
   }
 
-  def live(transactor: Transactor[Task]): ULayer[Connection] = ZLayer.succeed {
+  def live(transactor: Transactor[Task]): TaskLayer[Connection] = ZLayer.succeed {
     new Service {
       override def xa: doobie.Transactor[Task] = transactor
     }
